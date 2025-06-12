@@ -91,8 +91,8 @@
         return;
       }
 
-      // Opravený výpočet dle správného principu
-      const requiredCurrentSalary = pastSalary * (cpiData[currentYear] / 100);
+      const inflationFactor = cpiData[currentYear] / 100;
+      const requiredCurrentSalary = pastSalary * inflationFactor;
       const difference = currentSalary - requiredCurrentSalary;
       const percentChange = (difference / requiredCurrentSalary) * 100;
 
@@ -101,13 +101,19 @@
       const formattedDiff = formatNumberCZ(Math.abs(Math.round(difference)));
       const formattedPercent = formatPercent(Math.abs(percentChange));
 
-      const status = difference > 0 ? 'vzrostla' : 'poklesla';
-      const comparison = difference > 0 ? 'lépe' : 'hůře';
+      let statusText = '';
 
-      document.getElementById("result").innerHTML =
-        `Vaše reálná mzda ${status} mezi uvedenými roky o <strong>${formattedPercent}</strong>.<br>
+      if (difference < 0) {
+        statusText = `Vaše reálná mzda poklesla mezi uvedenými roky o <strong>${formattedPercent}</strong>.<br>
         Abyste si mohl za svou výplatu koupit to stejné, co v roce ${pastYear}, musel byste dnes vydělávat <strong>${formattedRequired} korun</strong>.<br>
-        Váš současný plat je <strong>${formattedCurrent} korun</strong>, takže reálně jste na tom <strong>${comparison} o ${formattedDiff} korun</strong>.`;
+        Váš současný plat je <strong>${formattedCurrent} korun</strong>, takže reálně jste na tom <strong>hůře o ${formattedDiff} korun</strong>.`;
+      } else {
+        statusText = `Vaše reálná mzda vzrostla mezi uvedenými roky o <strong>${formattedPercent}</strong>.<br>
+        Ceny sice vzrostly, ale váš příjem rostl rychleji. Pro udržení stejné kupní síly jako v roce ${pastYear} by vám dnes stačilo vydělávat <strong>${formattedRequired} korun</strong>.<br>
+        Váš současný plat je <strong>${formattedCurrent} korun</strong>, takže reálně jste na tom <strong>lépe o ${formattedDiff} korun</strong>.`;
+      }
+
+      document.getElementById("result").innerHTML = statusText;
     }
   </script>
 </body>
