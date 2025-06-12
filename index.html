@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
-  <title>Jak se mi propadla reálná mzda?</title>
+  <title>Kalkulačka reálné mzdy</title>
   <style>
     .kalkulacka {
       font-family: sans-serif;
@@ -25,7 +25,7 @@
 </head>
 <body>
   <div class="kalkulacka">
-    <h2>Jak se mi propadla reálná mzda?</h2>
+    <h2>Kalkulačka reálné mzdy</h2>
 
     <label for="pastSalary">Váš plat v minulosti (např. v roce 2019):</label>
     <input type="number" id="pastSalary" placeholder="např. 30000">
@@ -92,19 +92,22 @@
       }
 
       const inflationFactor = cpiData[currentYear] / cpiData[pastYear];
-      const requiredSalaryToday = pastSalary * inflationFactor;
-      const difference = currentSalary - requiredSalaryToday;
-      const percentDrop = ((requiredSalaryToday - currentSalary) / requiredSalaryToday) * 100;
+      const equivalentCurrentSalary = pastSalary * inflationFactor;
+      const difference = currentSalary - equivalentCurrentSalary;
+      const percentChange = (difference / equivalentCurrentSalary) * 100;
 
-      const formattedRequired = formatNumberCZ(Math.round(requiredSalaryToday));
+      const formattedRequired = formatNumberCZ(Math.round(equivalentCurrentSalary));
       const formattedCurrent = formatNumberCZ(Math.round(currentSalary));
       const formattedDiff = formatNumberCZ(Math.abs(Math.round(difference)));
-      const formattedPercent = formatPercent(percentDrop);
+      const formattedPercent = formatPercent(Math.abs(percentChange));
+
+      const status = difference > 0 ? 'vzrostla' : 'klesla';
+      const comparison = difference > 0 ? 'lépe' : 'hůře';
 
       document.getElementById("result").innerHTML =
-        `Vaše reálná mzda poklesla mezi uvedenými roky o <strong>${formattedPercent}</strong>.<br>
+        `Vaše reálná mzda ${status} mezi uvedenými roky o <strong>${formattedPercent}</strong>.<br>
         Abyste si mohli za svou výplatu koupit to stejné, co v roce ${pastYear}, museli byste mít dnes plat <strong>${formattedRequired} Kč</strong>.<br>
-        Váš současný plat je <strong>${formattedCurrent} Kč</strong>, takže reálně jste na tom <strong>${difference > 0 ? 'lépe' : 'hůře'} o ${formattedDiff} Kč</strong>.`;
+        Váš současný plat je <strong>${formattedCurrent} Kč</strong>, takže reálně jste na tom <strong>${comparison} o ${formattedDiff} Kč</strong>.`;
     }
   </script>
 </body>
