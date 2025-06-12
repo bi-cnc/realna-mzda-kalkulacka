@@ -46,13 +46,12 @@
 
   <script>
     const baseCPI = {
-      2018: 97.2,
-      2019: 100.0,
-      2020: 103.2,
-      2021: 107.2,
-      2022: 123.4,
-      2023: 136.5,
-      2024: 139.8
+      2019: 108.3,
+      2020: 111.8,
+      2021: 116.1,
+      2022: 133.6,
+      2023: 147.8,
+      2024: 151.4
     };
 
     const yearSelects = [document.getElementById("pastYear"), document.getElementById("currentYear")];
@@ -64,7 +63,7 @@
         select.appendChild(option);
       }
     }
-    document.getElementById("pastYear").value = "2019";
+    document.getElementById("pastYear").value = "2020";
     document.getElementById("currentYear").value = "2024";
 
     function formatNumberCZ(value) {
@@ -91,9 +90,12 @@
         return;
       }
 
-      // Varianta 2 – relativní přepočet: minulý rok = 100
-      const relativeCPI = 100 * baseCPI[currentYear] / baseCPI[pastYear];
-      const requiredCurrentSalary = pastSalary * (relativeCPI / 100);
+      const normalizedCPI = {};
+      for (const year in baseCPI) {
+        normalizedCPI[year] = baseCPI[year] / baseCPI[pastYear] * 100;
+      }
+
+      const requiredCurrentSalary = pastSalary * (normalizedCPI[currentYear] / 100);
       const difference = currentSalary - requiredCurrentSalary;
       const percentChange = (difference / requiredCurrentSalary) * 100;
 
