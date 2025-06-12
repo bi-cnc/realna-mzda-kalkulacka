@@ -91,8 +91,10 @@
         return;
       }
 
-      // Oprava: správný poměr CPI mezi dvěma roky
-      const requiredCurrentSalary = pastSalary * (cpiData[currentYear] / cpiData[pastYear]);
+      // Výpočet založený na změně CPI mezi dvěma roky
+      const cpiPast = cpiData[pastYear];
+      const cpiCurrent = cpiData[currentYear];
+      const requiredCurrentSalary = pastSalary * (cpiCurrent / cpiPast);
       const difference = currentSalary - requiredCurrentSalary;
       const percentChange = (difference / requiredCurrentSalary) * 100;
 
