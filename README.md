@@ -1,0 +1,1 @@
+# realna-mzda-kalkulacka
