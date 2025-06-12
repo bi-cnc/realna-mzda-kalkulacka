@@ -4,24 +4,28 @@
   <meta charset="UTF-8">
   <title>O kolik si dnes koupíte z výplaty méně než dřív?</title>
   <style>
+    body {
+      background: #f8f9fb;
+    }
     .kalkulacka {
       font-family: sans-serif;
       padding: 1rem;
-      max-width: 480px;
+      max-width: 520px;
       margin: auto;
       background-color: #fff;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
     .kalkulacka h2 {
-      color: #222;
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
+      color: #111;
+      font-size: 1.6rem;
+      margin-bottom: 0.4rem;
     }
     .kalkulacka p.intro {
       font-size: 0.95rem;
       color: #444;
-      margin-bottom: 1.5rem;
+      line-height: 1.5;
+      margin-bottom: 1.6rem;
     }
     .kalkulacka input, .kalkulacka select, .kalkulacka button {
       width: 100%;
@@ -38,8 +42,18 @@
       cursor: pointer;
     }
     .kalkulacka .result {
+      font-weight: normal;
+      line-height: 1.7;
+      margin-top: 1.5rem;
+    }
+    .result.negative {
+      color: #a50000;
+    }
+    .result.positive {
+      color: #004080;
+    }
+    .result strong.num {
       font-weight: bold;
-      margin-top: 1rem;
     }
   </style>
 </head>
@@ -105,8 +119,11 @@
       const currentSalary = parseFloat(document.getElementById("currentSalary").value);
       const pastYear = document.getElementById("pastYear").value;
 
+      const resultDiv = document.getElementById("result");
+
       if (isNaN(pastSalary) || isNaN(currentSalary)) {
-        document.getElementById("result").textContent = "Zadejte prosím oba platy.";
+        resultDiv.textContent = "Zadejte prosím oba platy.";
+        resultDiv.className = "result";
         return;
       }
 
@@ -123,16 +140,18 @@
       let statusText = '';
 
       if (difference < 0) {
-        statusText = `Vaše reálná mzda poklesla o <strong>${formattedPercent}</strong>.<br>
-        Abyste si dnes mohl(a) koupit to stejné co v roce ${pastYear}, musel(a) byste vydělávat <strong>${formattedRequired} korun</strong>.<br>
-        Váš současný plat je <strong>${formattedCurrent} korun</strong>, takže jste na tom reálně <strong>hůře o ${formattedDiff} korun</strong>.`;
+        resultDiv.className = "result negative";
+        statusText = `Vaše reálná mzda poklesla o <strong class="num">${formattedPercent}</strong>.<br>
+        Abyste si dnes mohl(a) koupit to stejné co v roce <strong class="num">${pastYear}</strong>, musel(a) byste vydělávat <strong class="num">${formattedRequired} korun</strong>.<br>
+        Váš současný plat je <strong class="num">${formattedCurrent} korun</strong>, takže jste na tom reálně <strong class="num">hůře o ${formattedDiff} korun</strong>.`;
       } else {
-        statusText = `Vaše reálná mzda vzrostla o <strong>${formattedPercent}</strong>.<br>
-        Pro udržení stejné kupní síly jako v roce ${pastYear} by vám dnes stačilo vydělávat <strong>${formattedRequired} korun</strong>.<br>
-        Váš současný plat je <strong>${formattedCurrent} korun</strong>, takže jste na tom reálně <strong>lépe o ${formattedDiff} korun</strong>.`;
+        resultDiv.className = "result positive";
+        statusText = `Vaše reálná mzda vzrostla o <strong class="num">${formattedPercent}</strong>.<br>
+        Pro udržení stejné kupní síly jako v roce <strong class="num">${pastYear}</strong> by vám dnes stačilo vydělávat <strong class="num">${formattedRequired} korun</strong>.<br>
+        Váš současný plat je <strong class="num">${formattedCurrent} korun</strong>, takže jste na tom reálně <strong class="num">lépe o ${formattedDiff} korun</strong>.`;
       }
 
-      document.getElementById("result").innerHTML = statusText;
+      resultDiv.innerHTML = statusText;
     }
   </script>
 </body>
