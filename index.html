@@ -4,64 +4,95 @@
   <meta charset="UTF-8">
   <title>O kolik si dnes koupíte z výplaty méně než dřív?</title>
   <style>
-    body {
-      background: #fff;
-      margin: 0;
-      padding: 0;
-    }
+  body {
+    background: #fff;
+    margin: 0;
+    padding: 0;
+  }
+
+  .kalkulacka {
+    font-family: sans-serif;
+    padding: 1rem;
+    max-width: 520px;
+    margin: 2rem auto;
+    background-color: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+  }
+
+  .kalkulacka h2 {
+    color: #111;
+    font-size: 1.6rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .kalkulacka p.intro {
+    font-size: 0.95rem;
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 1.6rem;
+  }
+
+  .kalkulacka input,
+  .kalkulacka select,
+  .kalkulacka button {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .kalkulacka button {
+    background-color: #F46958;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .kalkulacka .result {
+    font-weight: normal;
+    line-height: 1.7;
+    margin-top: 1.5rem;
+  }
+
+  .result.negative {
+    color: #a50000;
+  }
+
+  .result.positive {
+    color: #004080;
+  }
+
+  .result strong.num {
+    font-weight: bold;
+  }
+
+  /* RESPONSIVE DESIGN */
+  @media (max-width: 480px) {
     .kalkulacka {
-      font-family: sans-serif;
-      padding: 1rem;
-      max-width: 520px;
-      margin: 2rem auto;
-      background-color: transparent;
-      border-radius: 0;
-      box-shadow: none;
-      box-sizing: border-box;
+      padding: 1.5rem;
     }
+
     .kalkulacka h2 {
-      color: #111;
-      font-size: 1.6rem;
-      margin-bottom: 0.4rem;
+      font-size: 1.4rem;
     }
-    .kalkulacka p.intro {
-      font-size: 0.95rem;
-      color: #444;
-      line-height: 1.5;
-      margin-bottom: 1.6rem;
-    }
+
     .kalkulacka input,
     .kalkulacka select,
     .kalkulacka button {
-      width: 100%;
-      box-sizing: border-box;
-      margin-bottom: 1rem;
-      padding: 0.75rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      font-size: 1.05rem;
+      padding: 1rem;
     }
+
     .kalkulacka button {
-      background-color: #F46958;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
+      font-size: 1.1rem;
     }
-    .kalkulacka .result {
-      font-weight: normal;
-      line-height: 1.7;
-      margin-top: 1.5rem;
-    }
-    .result.negative {
-      color: #a50000;
-    }
-    .result.positive {
-      color: #004080;
-    }
-    .result strong.num {
-      font-weight: bold;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
   <div class="kalkulacka">
