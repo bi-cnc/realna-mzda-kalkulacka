@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
-  <title>O kolik si dnes koupíte méně než dřív?</title>
+  <title>O kolik si dnes koupíte z výplaty méně než dřív?</title>
   <style>
     .kalkulacka {
       font-family: sans-serif;
@@ -16,7 +16,12 @@
     .kalkulacka h2 {
       color: #222;
       font-size: 1.5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .kalkulacka p.intro {
+      font-size: 0.95rem;
+      color: #444;
+      margin-bottom: 1.5rem;
     }
     .kalkulacka input, .kalkulacka select, .kalkulacka button {
       width: 100%;
@@ -40,7 +45,11 @@
 </head>
 <body>
   <div class="kalkulacka">
-    <h2>O kolik si dnes koupíte méně než dřív?</h2>
+    <h2>O kolik si dnes koupíte z výplaty méně než dřív?</h2>
+    <p class="intro">
+      <strong>I když dnes vyděláváte víc než před pěti lety, možná si za svou výplatu koupíte méně.</strong><br>
+      Tato kalkulačka vám ukáže, jak se změnila vaše reálná mzda – tedy kolik byste museli vydělávat dnes, abyste si mohli dovolit to samé jako dřív.
+    </p>
 
     <label for="pastSalary">Kolik jste vydělával(a) v minulosti?</label>
     <input type="number" id="pastSalary" placeholder="např. 30000">
