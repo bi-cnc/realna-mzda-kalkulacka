@@ -92,11 +92,11 @@
       }
 
       const inflationFactor = cpiData[currentYear] / cpiData[pastYear];
-      const realCurrentSalary = currentSalary / inflationFactor;
-      const difference = realCurrentSalary - pastSalary;
-      const percentChange = (difference / pastSalary) * 100;
+      const requiredCurrentSalary = pastSalary * inflationFactor;
+      const difference = currentSalary - requiredCurrentSalary;
+      const percentChange = (difference / requiredCurrentSalary) * 100;
 
-      const formattedRequired = formatNumberCZ(Math.round(currentSalary / inflationFactor));
+      const formattedRequired = formatNumberCZ(Math.round(requiredCurrentSalary));
       const formattedCurrent = formatNumberCZ(Math.round(currentSalary));
       const formattedDiff = formatNumberCZ(Math.abs(Math.round(difference)));
       const formattedPercent = formatPercent(Math.abs(percentChange));
@@ -104,13 +104,9 @@
       const status = difference > 0 ? 'vzrostla' : 'poklesla';
       const comparison = difference > 0 ? 'lépe' : 'hůře';
 
-      const textRequirement = difference < 0
-        ? `Abyste si mohli za svou výplatu koupit to stejné, co v roce ${pastYear}, museli byste mít dnes plat <strong>${formattedRequired} korun</strong>.`
-        : `Se svou současnou výplatou si dnes můžete dovolit více než v roce ${pastYear} – tehdy by vám stačilo <strong>${formattedRequired} korun</strong>.`;
-
       document.getElementById("result").innerHTML =
         `Vaše reálná mzda ${status} mezi uvedenými roky o <strong>${formattedPercent}</strong>.<br>
-        ${textRequirement}<br>
+        Abyste si mohl za svou výplatu koupit to stejné, co v roce ${pastYear}, musel byste dnes vydělávat <strong>${formattedRequired} korun</strong>.<br>
         Váš současný plat je <strong>${formattedCurrent} korun</strong>, takže reálně jste na tom <strong>${comparison} o ${formattedDiff} korun</strong>.`;
     }
   </script>
