@@ -94,14 +94,14 @@
       const inflationFactor = cpiData[currentYear] / cpiData[pastYear];
       const equivalentCurrentSalary = pastSalary * inflationFactor;
       const difference = currentSalary - equivalentCurrentSalary;
-      const percentChange = (difference / equivalentCurrentSalary) * 100;
+      const percentChange = ((currentSalary - equivalentCurrentSalary) / equivalentCurrentSalary) * 100;
 
       const formattedRequired = formatNumberCZ(Math.round(equivalentCurrentSalary));
       const formattedCurrent = formatNumberCZ(Math.round(currentSalary));
       const formattedDiff = formatNumberCZ(Math.abs(Math.round(difference)));
       const formattedPercent = formatPercent(Math.abs(percentChange));
 
-      const status = difference > 0 ? 'vzrostla' : 'klesla';
+      const status = difference > 0 ? 'vzrostla' : 'poklesla';
       const comparison = difference > 0 ? 'lépe' : 'hůře';
 
       document.getElementById("result").innerHTML =
