@@ -104,10 +104,14 @@
       const status = difference > 0 ? 'vzrostla' : 'poklesla';
       const comparison = difference > 0 ? 'lépe' : 'hůře';
 
+      const textRequirement = difference < 0
+        ? `Abyste si mohli za svou výplatu koupit to stejné, co v roce ${pastYear}, museli byste mít dnes plat <strong>${formattedRequired} korun</strong>.`
+        : `Se svou současnou výplatou si dnes můžete dovolit více než v roce ${pastYear} – tehdy by vám stačilo <strong>${formattedRequired} korun</strong>.`;
+
       document.getElementById("result").innerHTML =
         `Vaše reálná mzda ${status} mezi uvedenými roky o <strong>${formattedPercent}</strong>.<br>
-        Abyste si mohli za svou výplatu koupit to stejné, co v roce ${pastYear}, museli byste mít dnes plat <strong>${formattedRequired} Kč</strong>.<br>
-        Váš současný plat je <strong>${formattedCurrent} Kč</strong>, takže reálně jste na tom <strong>${comparison} o ${formattedDiff} Kč</strong>.`;
+        ${textRequirement}<br>
+        Váš současný plat je <strong>${formattedCurrent} korun</strong>, takže reálně jste na tom <strong>${comparison} o ${formattedDiff} korun</strong>.`;
     }
   </script>
 </body>
