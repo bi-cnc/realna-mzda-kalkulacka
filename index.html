@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
   <meta charset="UTF-8">
-  <title>Kalkulačka reálné mzdy</title>
+  <title>O kolik si dnes koupíte méně než dřív?</title>
   <style>
     .kalkulacka {
       font-family: sans-serif;
@@ -10,12 +10,27 @@
       max-width: 480px;
       margin: auto;
       background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .kalkulacka h2 {
+      color: #222;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
     }
     .kalkulacka input, .kalkulacka select, .kalkulacka button {
       width: 100%;
       margin-bottom: 1rem;
-      padding: 0.5rem;
+      padding: 0.75rem;
       font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .kalkulacka button {
+      background-color: #0051a2;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
     }
     .kalkulacka .result {
       font-weight: bold;
@@ -25,26 +40,25 @@
 </head>
 <body>
   <div class="kalkulacka">
-    <h2>Kalkulačka reálné mzdy</h2>
+    <h2>O kolik si dnes koupíte méně než dřív?</h2>
 
-    <label for="pastSalary">Váš plat v minulosti (např. v roce 2019):</label>
+    <label for="pastSalary">Kolik jste vydělával(a) v minulosti?</label>
     <input type="number" id="pastSalary" placeholder="např. 30000">
 
-    <label for="currentSalary">Váš současný plat:</label>
-    <input type="number" id="currentSalary" placeholder="např. 37000">
-
-    <label for="pastYear">Rok minulého platu:</label>
+    <label for="pastYear">Vyberte rok, ze kterého je váš plat:</label>
     <select id="pastYear"></select>
 
-    <label for="currentYear">Současný rok:</label>
-    <select id="currentYear"></select>
+    <label for="currentSalary">Kolik vyděláváte dnes?</label>
+    <input type="number" id="currentSalary" placeholder="např. 37000">
 
-    <button onclick="calculateRealWage()">Spočítat</button>
+    <button onclick="calculateRealWage()">Zjistit, jak jsem na tom</button>
 
     <div class="result" id="result"></div>
   </div>
 
   <script>
+    const CURRENT_YEAR = "2024";
+
     const cpiMap = {
       "2019": {"2019": 100.0,"2020": 103.232,"2021": 107.202,"2022": 123.361,"2023": 136.473,"2024": 139.797},
       "2020": {"2019": 96.869,"2020": 100.0,"2021": 103.846,"2022": 119.499,"2023": 132.2,"2024": 135.42},
@@ -54,17 +68,15 @@
       "2024": {"2019": 71.532,"2020": 73.844,"2021": 76.684,"2022": 88.243,"2023": 97.622,"2024": 100.0}
     };
 
-    const yearSelects = [document.getElementById("pastYear"), document.getElementById("currentYear")];
-    for (const select of yearSelects) {
-      for (const year of Object.keys(cpiMap)) {
-        const option = document.createElement("option");
-        option.value = year;
-        option.textContent = year;
-        select.appendChild(option);
-      }
+    const pastYearSelect = document.getElementById("pastYear");
+    for (const year of Object.keys(cpiMap)) {
+      if (year === CURRENT_YEAR) continue;
+      const option = document.createElement("option");
+      option.value = year;
+      option.textContent = year;
+      pastYearSelect.appendChild(option);
     }
-    document.getElementById("pastYear").value = "2019";
-    document.getElementById("currentYear").value = "2024";
+    document.getElementById("pastYear").value = "2020";
 
     function formatNumberCZ(value) {
       return value.toLocaleString("cs-CZ");
@@ -83,14 +95,13 @@
       const pastSalary = parseFloat(document.getElementById("pastSalary").value);
       const currentSalary = parseFloat(document.getElementById("currentSalary").value);
       const pastYear = document.getElementById("pastYear").value;
-      const currentYear = document.getElementById("currentYear").value;
 
       if (isNaN(pastSalary) || isNaN(currentSalary)) {
         document.getElementById("result").textContent = "Zadejte prosím oba platy.";
         return;
       }
 
-      const relativeIndex = cpiMap[pastYear][currentYear];
+      const relativeIndex = cpiMap[pastYear][CURRENT_YEAR];
       const requiredCurrentSalary = pastSalary * (relativeIndex / 100);
       const difference = currentSalary - requiredCurrentSalary;
       const percentChange = (difference / requiredCurrentSalary) * 100;
@@ -103,13 +114,13 @@
       let statusText = '';
 
       if (difference < 0) {
-        statusText = `Vaše reálná mzda poklesla mezi uvedenými roky o <strong>${formattedPercent}</strong>.<br>
-        Abyste si mohl za svou výplatu koupit to stejné, co v roce ${pastYear}, musel byste dnes vydělávat <strong>${formattedRequired} korun</strong>.<br>
-        Váš současný plat je <strong>${formattedCurrent} korun</strong>, takže reálně jste na tom <strong>hůře o ${formattedDiff} korun</strong>.`;
+        statusText = `Vaše reálná mzda poklesla o <strong>${formattedPercent}</strong>.<br>
+        Abyste si dnes mohl(a) koupit to stejné co v roce ${pastYear}, musel(a) byste vydělávat <strong>${formattedRequired} korun</strong>.<br>
+        Váš současný plat je <strong>${formattedCurrent} korun</strong>, takže jste na tom reálně <strong>hůře o ${formattedDiff} korun</strong>.`;
       } else {
-        statusText = `Vaše reálná mzda vzrostla mezi uvedenými roky o <strong>${formattedPercent}</strong>.<br>
-        Ceny sice vzrostly, ale váš příjem rostl rychleji. Pro udržení stejné kupní síly jako v roce ${pastYear} by vám dnes stačilo vydělávat <strong>${formattedRequired} korun</strong>.<br>
-        Váš současný plat je <strong>${formattedCurrent} korun</strong>, takže reálně jste na tom <strong>lépe o ${formattedDiff} korun</strong>.`;
+        statusText = `Vaše reálná mzda vzrostla o <strong>${formattedPercent}</strong>.<br>
+        Pro udržení stejné kupní síly jako v roce ${pastYear} by vám dnes stačilo vydělávat <strong>${formattedRequired} korun</strong>.<br>
+        Váš současný plat je <strong>${formattedCurrent} korun</strong>, takže jste na tom reálně <strong>lépe o ${formattedDiff} korun</strong>.`;
       }
 
       document.getElementById("result").innerHTML = statusText;
