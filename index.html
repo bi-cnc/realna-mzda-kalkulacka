@@ -45,7 +45,7 @@
   </div>
 
   <script>
-    const cpiData = {
+    const baseCPI = {
       2018: 97.2,
       2019: 100.0,
       2020: 103.2,
@@ -57,7 +57,7 @@
 
     const yearSelects = [document.getElementById("pastYear"), document.getElementById("currentYear")];
     for (const select of yearSelects) {
-      for (const year of Object.keys(cpiData)) {
+      for (const year of Object.keys(baseCPI)) {
         const option = document.createElement("option");
         option.value = year;
         option.textContent = year;
@@ -91,10 +91,12 @@
         return;
       }
 
-      // Výpočet založený na změně CPI mezi dvěma roky
-      const cpiPast = cpiData[pastYear];
-      const cpiCurrent = cpiData[currentYear];
-      const requiredCurrentSalary = pastSalary * (cpiCurrent / cpiPast);
+      // Dynamické přepočítání cenové hladiny, kde minulý rok = 100
+      const cpiPast = baseCPI[pastYear];
+      const cpiCurrent = baseCPI[currentYear];
+      const relativeCPI = cpiCurrent / cpiPast * 100;
+
+      const requiredCurrentSalary = pastSalary * (relativeCPI / 100);
       const difference = currentSalary - requiredCurrentSalary;
       const percentChange = (difference / requiredCurrentSalary) * 100;
 
