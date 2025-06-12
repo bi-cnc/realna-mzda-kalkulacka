@@ -91,11 +91,8 @@
         return;
       }
 
-      // Dynamické přepočítání cenové hladiny, kde minulý rok = 100
-      const cpiPast = baseCPI[pastYear];
-      const cpiCurrent = baseCPI[currentYear];
-      const relativeCPI = cpiCurrent / cpiPast * 100;
-
+      // Varianta 2 – relativní přepočet: minulý rok = 100
+      const relativeCPI = 100 * baseCPI[currentYear] / baseCPI[pastYear];
       const requiredCurrentSalary = pastSalary * (relativeCPI / 100);
       const difference = currentSalary - requiredCurrentSalary;
       const percentChange = (difference / requiredCurrentSalary) * 100;
